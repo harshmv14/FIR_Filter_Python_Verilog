@@ -1,0 +1,143 @@
+/* static/css/style.css */
+:root{
+  --bg:#0f1724;
+  --card:#0b1220;
+  --muted:#9aa7b2;
+  --accent:#6ee7b7;
+  --accent2:#60a5fa;
+  --glass: rgba(255,255,255,0.03);
+  --card-pad:18px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:linear-gradient(180deg, #071022 0%, #071428 60%);
+  color:#e6eef6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.hero{
+  padding:24px 28px;
+  text-align:center;
+  background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-bottom:1px solid rgba(255,255,255,0.03);
+}
+.hero.small{padding:18px}
+h1{margin:0;font-size:28px;letter-spacing:-0.3px}
+.subtitle{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+.card{max-width:980px;margin:24px auto;background:var(--card);border-radius:12px;padding:20px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+.container{max-width:1160px;margin:20px auto;padding:8px 18px}
+
+.form-row{display:flex;flex-direction:column;margin-bottom:12px}
+.form-row label{font-size:13px;color:var(--muted);margin-bottom:6px}
+.form-row input, .form-row select{background:var(--glass);border:1px solid rgba(255,255,255,0.028);padding:10px;border-radius:8px;color:inherit;font-size:14px}
+
+.edge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.actions{display:flex;align-items:center;gap:12px;margin-top:12px}
+.btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:10px;color:inherit;text-decoration:none;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#07202a;border:0;box-shadow:0 6px 18px rgba(20,150,120,0.06)}
+.hint{color:var(--muted);font-size:12px}
+
+.plots-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:24px 0}
+.plot img{width:100%;height:auto;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+.plot h3{margin:0 0 8px;font-size:15px;color:var(--muted)}
+
+.summary ul{list-style:none;padding:0;margin:0}
+.summary li{padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02);color:var(--muted)}
+
+.footer{text-align:center;padding:16px;color:var(--muted);font-size:13px}
+
+/* Hide unused filter input groups */
+.freq-fields.hidden {
+  display: none;
+}
+
+/* Match form styling */
+.freq-fields {
+  background: var(--glass);
+  border: 1px solid rgba(255,255,255,0.02);
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+}
+
+/* Labels inside freq-fields */
+.freq-fields label {
+  font-size: 13px;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Inputs inside freq-fields */
+.freq-fields input {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: inherit;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* === Dropdown Wrapper Styling === */
+select[name="filter_type"] {
+  appearance: none;          /* remove native arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: inherit;
+  font-size: 14px;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+
+  /* Custom arrow */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='18' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l4 4 4-4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+  padding-right: 40px;
+}
+
+/* Hover + Focus states */
+select[name="filter_type"]:hover {
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(20,30,40,0.95);
+}
+select[name="filter_type"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,150,255,0.25);
+}
+
+/* === Dropdown Options Styling === */
+select[name="filter_type"] option {
+  background: #101b29;   /* same as your card/glass bg */
+  color: #eee;
+  font-size: 14px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Last option cleanup */
+select[name="filter_type"] option:last-child {
+  border-bottom: none;
+}
+
+/* On hover in open list (works in most browsers) */
+select[name="filter_type"] option:checked,
+select[name="filter_type"] option:hover {
+  background: rgba(0,150,255,0.2);
+  color: #fff;
+}
+

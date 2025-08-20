@@ -1,0 +1,136 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FIR Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1>FIR Filter Design Dashboard</h1>
+    <p class="subtitle">Generate input • design filter • run simulation • compare results</p>
+  </header>
+
+  <main class="card">
+    <form action="{{ url_for('run_flow') }}" method="post">
+      <section class="form-row">
+        <label>Sampling Frequency (Hz)</label>
+        <input name="fs" type="number" step="1" value="{{ defaults.fs }}" required>
+      </section>
+
+      <section class="form-row">
+        <label>Filter Type</label>
+        <select name="filter_type">
+          <option value="lowpass">Lowpass</option>
+          <option value="highpass">Highpass</option>
+          <option value="bandpass">Bandpass</option>
+          <option value="bandstop">Bandstop</option>
+        </select>
+      </section>
+
+      <section class="form-row">
+        <label>Passband ripple (dB)</label>
+        <input name="ripple" type="number" step="0.1" value="{{ defaults.ripple }}">
+      </section>
+
+      <section class="form-row">
+        <label>Stopband attenuation (dB)</label>
+        <input name="attenuation" type="number" step="1" value="{{ defaults.attenuation }}">
+      </section>
+
+      <!-- Lowpass -->
+      <div id="lowpass-fields" class="freq-fields hidden">
+        <label>Passband edge (Hz)</label>
+        <input name="f_pass" type="number" step="0.1" value="{{ defaults.f_pass }}">
+        <label>Stopband edge (Hz)</label>
+        <input name="f_stop" type="number" step="0.1" value="{{ defaults.f_stop }}">
+      </div>
+
+      <!-- Highpass -->
+      <div id="highpass-fields" class="freq-fields hidden">
+        <label>Stopband edge (Hz)</label>
+        <input name="f_stop" type="number" step="0.1" value="{{ defaults.f_stop }}">
+        <label>Passband edge (Hz)</label>
+        <input name="f_pass" type="number" step="0.1" value="{{ defaults.f_pass }}">
+      </div>
+
+      <!-- Bandpass -->
+      <div id="bandpass-fields" class="freq-fields hidden">
+        <label>Stopband 1 (Hz)</label>
+        <input name="f_stop1" type="number" step="0.1" value="{{ defaults.f_stop1 }}">
+        <label>Passband 1 (Hz)</label>
+        <input name="f_pass1" type="number" step="0.1" value="{{ defaults.f_pass1 }}">
+        <label>Passband 2 (Hz)</label>
+        <input name="f_pass2" type="number" step="0.1" value="{{ defaults.f_pass2 }}">
+        <label>Stopband 2 (Hz)</label>
+        <input name="f_stop2" type="number" step="0.1" value="{{ defaults.f_stop2 }}">
+      </div>
+
+      <!-- Bandstop -->
+      <div id="bandstop-fields" class="freq-fields hidden">
+        <label>Passband 1 (Hz)</label>
+        <input name="f_pass1" type="number" step="0.1" value="{{ defaults.f_pass1 }}">
+        <label>Stopband 1 (Hz)</label>
+        <input name="f_stop1" type="number" step="0.1" value="{{ defaults.f_stop1 }}">
+        <label>Stopband 2 (Hz)</label>
+        <input name="f_stop2" type="number" step="0.1" value="{{ defaults.f_stop2 }}">
+        <label>Passband 2 (Hz)</label>
+        <input name="f_pass2" type="number" step="0.1" value="{{ defaults.f_pass2 }}">
+      </div>
+
+      <section class="form-row">
+        <label>Sine Frequencies (comma-separated)</label>
+        <input name="sine_freqs" type="text" value="{{ defaults.sine_freqs }}">
+      </section>
+
+      <section class="form-row">
+        <label>Number of taps (leave blank for auto)</label>
+        <input name="numtaps" type="text">
+      </section>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">Run Full Flow</button>
+        <small class="hint">This will run ModelSim in console mode.</small>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer"><small></small></footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const filterSelect = document.querySelector("select[name='filter_type']");
+      const sections = {
+        lowpass: document.getElementById("lowpass-fields"),
+        highpass: document.getElementById("highpass-fields"),
+        bandpass: document.getElementById("bandpass-fields"),
+        bandstop: document.getElementById("bandstop-fields"),
+      };
+
+      function updateFields() {
+        const value = filterSelect.value;
+        for (const key in sections) {
+          const section = sections[key];
+          const inputs = section.querySelectorAll("input");
+          if (key === value) {
+            section.classList.remove("hidden");
+            inputs.forEach(inp => inp.disabled = false);
+          } else {
+            section.classList.add("hidden");
+            inputs.forEach(inp => inp.disabled = true);
+          }
+        }
+      }
+
+      filterSelect.addEventListener("change", updateFields);
+      updateFields(); // initialize on load
+    });
+  </script>
+</body>
+</html>
+
