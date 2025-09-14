@@ -1,0 +1,56 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/harsh/Projects/FIR_gui
+vFIR_filter
+Z1 !s110 1757877293
+!i10b 1
+!s100 nW9MiVi4AUFJ8UENmQEdb2
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IlgKHN3TCbPOEYVfGM@z^Y0
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1755537277
+8/home/harsh/Projects/FIR_gui/verilog/FIR_filter/FIR_filter.v
+F/home/harsh/Projects/FIR_gui/verilog/FIR_filter/FIR_filter.v
+!i122 21
+L0 7 110
+Z4 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z5 !s108 1757877293.000000
+!s107 /home/harsh/Projects/FIR_gui/verilog/FIR_filter/TB_FIR_filter.v|/home/harsh/Projects/FIR_gui/verilog/FIR_filter/FIR_filter.v|
+Z6 !s90 /home/harsh/Projects/FIR_gui/verilog/FIR_filter/FIR_filter.v|/home/harsh/Projects/FIR_gui/verilog/FIR_filter/TB_FIR_filter.v|
+!i113 1
+Z7 tCvgOpt 0
+n@f@i@r_filter
+vtb_fir_filter
+R1
+!i10b 1
+!s100 [YD>gUO_A]iBbK]lYdzIf1
+R2
+I>?nY?P>`W>Kb^6lQAQKeh2
+R3
+R0
+w1755537335
+8/home/harsh/Projects/FIR_gui/verilog/FIR_filter/TB_FIR_filter.v
+F/home/harsh/Projects/FIR_gui/verilog/FIR_filter/TB_FIR_filter.v
+!i122 21
+L0 3 90
+R4
+r1
+!s85 0
+31
+R5
+Z8 !s107 /home/harsh/Projects/FIR_gui/verilog/FIR_filter/TB_FIR_filter.v|/home/harsh/Projects/FIR_gui/verilog/FIR_filter/FIR_filter.v|
+R6
+!i113 1
+R7

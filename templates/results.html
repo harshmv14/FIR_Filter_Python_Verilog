@@ -71,14 +71,31 @@
 
   <main class="card">
     <h2>Simulation Summary</h2>
+
     <p>
+      Method: <b>{{ results.method|capitalize }}</b> |
       Sampling: {{ results.fs }} Hz |
       Filter: {{ results.ftype }} ({{ results.numtaps }} taps) |
-      Ripple: {{ results.ripple }} dB |
-      Stop Att: {{ results.attenuation }} dB |
       Sine freqs: {{ results.sine_freqs }} |
       RMSE vs Verilog: {{ "%.4e"|format(results.rmse) }}
     </p>
+
+    {% if results.method == "remez" %}
+    <ul>
+      <li>Passband ripple: {{ results.ripple }} dB</li>
+      <li>Stopband attenuation: {{ results.attenuation }} dB</li>
+      <li>Edges: {{ results.edges }}</li>
+    </ul>
+    {% elif results.method == "firwin" %}
+    <ul>
+      <li>Cutoff: {{ results.cutoff }}</li>
+      <li>Window: {{ results.window }}</li>
+      <li>Pass Zero: {{ results.pass_zero }}</li>
+      {% if results.beta is not none %}
+      <li>Kaiser β: {{ results.beta }}</li>
+      {% endif %}
+    </ul>
+    {% endif %}
 
     <h2>Plots</h2>
     <div class="plots-grid">

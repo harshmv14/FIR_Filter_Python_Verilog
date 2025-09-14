@@ -8,7 +8,7 @@ import shlex
 import subprocess
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import remez, lfilter, freqz
+from scipy.signal import remez, lfilter, freqz, firwin
 
 # ---------------------------
 # Utility: Q formats & I/O
@@ -135,6 +135,28 @@ def design_fir(fs: float, ripple_db: float, attenuation_db: float,
     print(bands)
     taps = remez(numtaps, bands, desired, weight=weight, fs=fs)
     return taps
+
+def design_firwin(fs: float, numtaps: int, cutoff, window: str = "hamming", pass_zero: bool = True, beta: float | None = None):
+    """
+    FIR filter design using firwin.
+    cutoff : float or list of float (normalized 0..fs/2)
+    window : 'hamming', 'hann', 'kaiser', etc.
+    pass_zero : True (lowpass/bandstop) or False (highpass/bandpass)
+    beta : only used if window='kaiser'
+    """
+    # Normalize cutoff(s) to Hz if given as absolute
+    if isinstance(cutoff, (list, tuple)):
+        cutoff = [float(c) for c in cutoff]
+    else:
+        cutoff = float(cutoff)
+
+    if window == "kaiser" and beta is not None:
+        window = ("kaiser", beta)
+
+    taps = firwin(numtaps, cutoff=cutoff, window=window, fs=fs, pass_zero=pass_zero)
+    print(f"✅ FIRWIN designed {numtaps} taps, cutoff={cutoff}, window={window}, pass_zero={pass_zero}")
+    return taps
+
 
 def save_coeffs_q5_27(taps: np.ndarray, path: str = "output/coeff.txt"):
     ensure_dirs()

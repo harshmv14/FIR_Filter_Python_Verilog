@@ -33,6 +33,15 @@
         </select>
       </section>
 
+     <section class="form-row">
+  <label>Design Method</label>
+  <select id="method" name="method" onchange="toggleFields()">
+    <option value="remez">Remez</option>
+    <option value="firwin">FIRWIN</option>
+  </select>
+</section> 
+
+              <div id="remez-fields" class="method-fields">
       <section class="form-row">
         <label>Passband ripple (dB)</label>
         <input name="ripple" type="number" step="0.1" value="{{ defaults.ripple }}">
@@ -82,6 +91,41 @@
         <label>Passband 2 (Hz)</label>
         <input name="f_pass2" type="number" step="0.1" value="{{ defaults.f_pass2 }}">
       </div>
+      </div>
+  
+      <div id="firwin-fields" class="method-fields hidden">
+<section class="form-row">
+    <label>Cutoff Frequency</label>
+    <input name="cutoff" type="text" placeholder="e.g. 0.3 or [0.2,0.5]">
+  </section>
+
+  <section class="form-row">
+    <label>Window</label>
+    <select id="window" name="window" onchange="toggleKaiser()">
+      <option value="hamming">Hamming</option>
+      <option value="hann">Hann</option>
+      <option value="kaiser">Kaiser</option>
+      <option value="blackman">Blackman</option>
+      <option value="boxcar">Rectangular (Boxcar)</option>
+    </select>
+  </section>
+
+  <section class="form-row hidden" id="kaiser-beta">
+    <label>Kaiser Beta</label>
+    <input name="beta" type="number" step="0.1" placeholder="e.g. 8.6">
+  </section>
+
+  <section class="form-row">
+    <label>Pass Zero</label>
+    <select name="pass_zero">
+      <option value="true">True</option>
+      <option value="false">False</option>
+    </select>
+  </section>
+
+</div>
+
+
 
       <section class="form-row">
         <label>Sine Frequencies (comma-separated)</label>
@@ -127,10 +171,49 @@
         }
       }
 
+
+    
       filterSelect.addEventListener("change", updateFields);
       updateFields(); // initialize on load
     });
   </script>
+<script>
+  const filterTypeSelect = document.querySelector("select[name=filter_type]");
+  const freqFields = document.querySelectorAll(".freq-fields");
+
+  filterTypeSelect.addEventListener("change", () => {
+    freqFields.forEach(el => el.classList.add("hidden"));
+    const fieldBlock = document.getElementById(filterTypeSelect.value + "-fields");
+    if (fieldBlock) fieldBlock.classList.remove("hidden");
+  });
+
+  // New: method selection
+  const methodSelect = document.getElementById("method");
+  const methodFields = document.querySelectorAll(".method-fields");
+
+  methodSelect.addEventListener("change", () => {
+    methodFields.forEach(el => el.classList.add("hidden"));
+    const block = document.getElementById(methodSelect.value + "-fields");
+    if (block) block.classList.remove("hidden");
+  });
+
+  // New: Kaiser beta toggle
+  const windowSelect = document.getElementById("window");
+  const kaiserBeta = document.getElementById("kaiser-beta");
+
+  if (windowSelect) {
+    windowSelect.addEventListener("change", () => {
+      if (windowSelect.value === "kaiser") {
+        kaiserBeta.classList.remove("hidden");
+      } else {
+        kaiserBeta.classList.add("hidden");
+      }
+    });
+  }
+</script>
+
+
+
 </body>
 </html>
 
