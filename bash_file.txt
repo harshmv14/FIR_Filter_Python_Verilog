@@ -1,0 +1,42 @@
+export QSYS_ROOTDIR="/home/harsh/intelFPGA_lite/20.1/quartus/sopc_builder/bin"
+# Intel Quartus Prime Lite
+export QUARTUS_ROOTDIR=~/intelFPGA_lite/20.1/quartus
+export PATH=$PATH:$QUARTUS_ROOTDIR/bin
+export PATH=$PATH:~/intelFPGA_lite/20.1/modelsim_ase/bin/
+
+simulate() {
+	if [ $# -lt 2 ]; then
+		echo "Usage: simulate <testbench_module> <verilog_files...>"
+		return 1
+	fi
+
+	TB_NAME="$1"
+	shift
+
+	vlib work
+	vlog "$@"
+	vsim -do "
+        vsim $TB_NAME;
+        add wave -r sim:/$TB_NAME/dut/*;
+        run -all;"
+	#quit -f;
+}
+
+simulate_headless() {
+	if [ $# -lt 2 ]; then
+		echo "Usage: simulate <testbench_module> <verilog_files...>"
+		return 1
+	fi
+
+	TB_NAME="$1"
+	shift
+
+	vlib work
+	vlog "$@"
+	vsim -c -do "
+        vsim $TB_NAME;
+        run -all;
+        quit -f;
+    " $TB_NAME
+}
+
