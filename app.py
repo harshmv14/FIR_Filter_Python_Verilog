@@ -104,6 +104,9 @@ def run_flow():
 
         # === Run flow ===
         t, wave = run_sine(fs, sine_freqs, duration=1.0)
+        subprocess.run(f"cp plots/sine_input_plot_zoomed.png {PLOTS_DIR}/sine_input_plot_zoomed.png", shell=True)
+
+        
 
         if method == "remez":
             taps = design_fir(fs, ripple, attenuation, ftype, edges, numtaps)

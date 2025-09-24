@@ -55,20 +55,38 @@ def run_sine(fs: float, freqs: list[float], duration: float = 1.0):
     max_abs = np.max(np.abs(wave))
     if max_abs > 0:
         wave /= max_abs
-
+    
     # Save Q1.31 input for Verilog
     with open("output/sine_wave_quant.txt", "w") as f:
         for v in wave:
             f.write(float_to_q1_31_hex(v) + "\n")
+    plot_duration_s = 0.03 
+    samples_to_show = int(min(num_samples, fs * plot_duration_s)) 
+  #  samples_to_show = min(num_samples, 2000)
 
-    # Quick zoom plot: ~5 cycles of lowest frequency
-    f_min = max(min(freqs) if freqs else 1.0, 1e-9)
-    samples_to_show = int(min(num_samples, (5 * fs / f_min)))
     plt.figure(figsize=(10, 5))
     plt.plot(t[:samples_to_show], wave[:samples_to_show])
-    plt.title(f"Sine Input (float) — zoomed ~5 cycles of {f_min} Hz")
-    plt.xlabel("Time (s)"); plt.ylabel("Amplitude"); plt.grid(True)
-    plt.tight_layout(); plt.savefig("plots/sine_input_plot_zoomed.png")
+    
+    # Update the title to be more accurate
+    title_freqs = ', '.join(map(str, freqs))
+    plt.title(f"Combined Sine Wave Input ({title_freqs} Hz)")
+    
+    plt.xlabel("Time (s)")
+    plt.ylabel("Amplitude")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("plots/sine_input_plot_zoomed.png", dpi=600)
+
+    # print(f"✅ Sine generated: fs={fs}, freqs={freqs}, samples={num_samples}")
+    # return t, wave
+    # # Quick zoom plot: ~5 cycles of lowest frequency
+    # f_min = max(min(freqs) if freqs else 1.0, 1e-9)
+    # samples_to_show = int(min(num_samples, (5 * fs / f_min)))
+    # plt.figure(figsize=(10, 5))
+    # plt.plot(t[:samples_to_show], wave[:samples_to_show])
+    # plt.title(f"Sine Input (float) — zoomed ~5 cycles of {f_min} Hz")
+    # plt.xlabel("Time (s)"); plt.ylabel("Amplitude"); plt.grid(True)
+    # plt.tight_layout(); plt.savefig("plots/sine_input_plot_zoomed.png",dpi=600)
 
     print(f"✅ Sine generated: fs={fs}, freqs={freqs}, samples={num_samples}")
     return t, wave
@@ -186,7 +204,7 @@ def plot_filter_response(fs, taps, filter_type, edges, ripple, attenuation, numt
     plt.title(f"{filter_type.upper()} Filter — {len(taps)} Taps")
     plt.xlabel("Frequency (Hz)"); plt.ylabel("Magnitude (dB)")
     plt.grid(True); plt.tight_layout()
-    plt.savefig("plots/filter_response.png")
+    plt.savefig("plots/filter_response.png",dpi=600)
     plt.close()
     print("✅ Filter design plot saved → plots/filter_response.png")
 
@@ -237,7 +255,7 @@ def analyze_verilog_output(fs: float,
     plt.plot(freqs[:half], Y[:half], linewidth=1)
     plt.title("Verilog Output — Frequency Spectrum")
     plt.xlabel("Frequency (Hz)"); plt.ylabel("Magnitude"); plt.grid(True)
-    plt.tight_layout(); plt.savefig("plots/filter_out_fft_verilog.png")
+    plt.tight_layout(); plt.savefig("plots/filter_out_fft_verilog.png",dpi=600)
 
     # Plot time (auto ~10 cycles if dom_freq>0)
     t = np.arange(N) / fs
@@ -245,11 +263,12 @@ def analyze_verilog_output(fs: float,
         samples_to_show = int(min(N, fs * (10.0 / dom_freq)))
     else:
         samples_to_show = min(N, 200)
-    plt.figure(figsize=(12, 4))
+    samples_to_show = 500
+    plt.figure(figsize=(12, 5))
     plt.plot(t[:samples_to_show], y[:samples_to_show], linewidth=1.2)
     plt.title(f"Verilog Output — Time Domain (showing {samples_to_show} samples)")
     plt.xlabel("Time (s)"); plt.ylabel("Amplitude"); plt.grid(True)
-    plt.tight_layout(); plt.savefig("plots/filter_out_time_verilog.png")
+    plt.tight_layout(); plt.savefig("plots/filter_out_time_verilog.png",dpi=600)
 
     print(f"🔎 Verilog dominant frequency ≈ {dom_freq:.2f} Hz")
     return y
@@ -277,7 +296,7 @@ def run_ideal_response(fs: float, taps: np.ndarray, sine_freqs: list[float], dur
     plt.plot(t[:500], y[:500])
     plt.title("Ideal Filtered Output — Time Domain (First 500 samples)")
     plt.xlabel("Time (s)"); plt.ylabel("Amplitude"); plt.grid(True)
-    plt.tight_layout(); plt.savefig("plots/ideal_response_time.png")
+    plt.tight_layout(); plt.savefig("plots/ideal_response_time.png",dpi=600)
 
     # FFT plot
     N = len(y)
@@ -287,7 +306,7 @@ def run_ideal_response(fs: float, taps: np.ndarray, sine_freqs: list[float], dur
     plt.plot(freqs[:N//2], Y[:N//2])
     plt.title("Ideal Filtered Output — Frequency Spectrum")
     plt.xlabel("Frequency (Hz)"); plt.ylabel("Magnitude"); plt.grid(True)
-    plt.tight_layout(); plt.savefig("plots/ideal_response_fft.png")
+    plt.tight_layout(); plt.savefig("plots/ideal_response_fft.png",dpi=600)
 
     print("✅ Ideal response saved: plots + output/ideal_response.npy")
     return y
@@ -326,7 +345,7 @@ def compare_ideal_vs_verilog(fs: float,
     plt.plot(verilog[:500], label="Verilog")
     plt.title("Time-Domain Comparison (First 500 samples)")
     plt.xlabel("Sample"); plt.ylabel("Amplitude"); plt.legend(); plt.grid(True)
-    plt.tight_layout(); plt.savefig("plots/comparison_time.png")
+    plt.tight_layout(); plt.savefig("plots/comparison_time.png",dpi=600)
 
     # FFT overlay
     F = np.fft.fftfreq(N, 1/fs)
@@ -338,7 +357,7 @@ def compare_ideal_vs_verilog(fs: float,
     plt.plot(F[:half], FFT_v[:half], label="Verilog FFT")
     plt.title("Frequency-Domain Comparison")
     plt.xlabel("Frequency (Hz)"); plt.ylabel("Magnitude"); plt.legend(); plt.grid(True)
-    plt.tight_layout(); plt.savefig("plots/comparison_fft.png")
+    plt.tight_layout(); plt.savefig("plots/comparison_fft.png",dpi=600)
 
     print("✅ Comparison saved: plots/comparison_time.png, plots/comparison_fft.png")
     return rmse

@@ -3,15 +3,15 @@
 #         run -all;
 #         quit -f;
 #     " tb_fir_filter 
-# Start time: 00:44:54 on Sep 15,2025
+# Start time: 23:33:27 on Sep 21,2025
 # Loading work.tb_fir_filter
 # Loading work.FIR_filter
 # 
 #         vsim tb_fir_filter
-# End time: 00:44:54 on Sep 15,2025, Elapsed time: 0:00:00
+# End time: 23:33:28 on Sep 21,2025, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0
 # vsim tb_fir_filter 
-# Start time: 00:44:54 on Sep 15,2025
+# Start time: 23:33:28 on Sep 21,2025
 # Loading work.tb_fir_filter
 # Loading work.FIR_filter
 # 
@@ -20,5 +20,5 @@
 # Simulation complete, results in output.txt
 # ** Note: $finish    : /home/harsh/Projects/FIR_gui/verilog/FIR_filter/TB_FIR_filter.v(89)
 #    Time: 80675 ns  Iteration: 1  Instance: /tb_fir_filter
-# End time: 00:44:56 on Sep 15,2025, Elapsed time: 0:00:02
+# End time: 23:33:30 on Sep 21,2025, Elapsed time: 0:00:02
 # Errors: 0, Warnings: 0

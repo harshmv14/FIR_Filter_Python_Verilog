@@ -1,1 +1,3 @@
-fir_gui/
+fir_gui/*
+__pycache__/*
+work/*
